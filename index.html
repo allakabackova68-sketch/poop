@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Кабачковый тест Аллочки</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: linear-gradient(135deg, #020617, #0f172a);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+  animation: fadeIn 0.8s ease;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+button {
+  display: block;
+  width: 100%;
+  margin: 8px 0;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: #22c55e;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  transform: scale(1.03);
+}
+
+button.selected {
+  background: white;
+  color: black;
+}
+
+img {
+  width: 100px;
+  margin-bottom: 10px;
+  animation: float 3s infinite ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {opacity:0;}
+  to {opacity:1;}
+}
+
+@keyframes float {
+  0% {transform: translateY(0);}
+  50% {transform: translateY(-8px);}
+  100% {transform: translateY(0);}
+}
+
+table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+td, th {
+  border: 1px solid #334155;
+  padding: 8px;
+}
+
+th {
+  background: #1e293b;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <img src="zucchini.png">
+  <h1>🥒 Тест Аллочки</h1>
+  <div id="app"></div>
+</div>
+
+<script>
+let score = 0;
+let current = 0;
+
+const questions = [
+  {q:"Как называется группа Аллочки?",a:["Кабачковый культ","Вселенная Аллочки","Кабачковый чат"],correct:1},
+  {q:"Кто муж Аллочки?",a:["Аркадий Кабачков","Древний кабачок","Кабачковый дух"],correct:0},
+  {q:"Как зовут сына?",a:["Корнилий Кабачков","Кабачон","Зелёныш"],correct:0},
+  {q:"Что чаще всего заказывают?",a:["Кабачковые наггетсы","Кабачковый бургер","Кабачковый суп"],correct:0},
+  {q:"Любимое блюдо?",a:["Кабачковая икра","Кабачковая пицца","Кабачковая паста"],correct:0},
+  {q:"Сколько кабачков в душе?",a:["1","1000","Бесконечность"],correct:2},
+  {q:"Где сила Аллочки?",a:["В банке икры","В кабачке","В холодильнике"],correct:0},
+  {q:"Любимый напиток?",a:["Кабачковый сок","Кабачковый уксус-латте","Вода с кабачком"],correct:1},
+  {q:"Какой тур?",a:["Тур по кабачковым полям","Побег с кабачком","Космос кабачков"],correct:0},
+  {q:"Кем был кабачок раньше?",a:["Кабачком","Протокабачком","Суперкабачком"],correct:1},
+  {q:"Где живёт дух?",a:["В кабачке","В икре","В измерении"],correct:2},
+  {q:"Любимое время?",a:["Кабачковое утро","Кабачковая ночь","Всегда"],correct:2},
+  {q:"Как начинается день?",a:["Есть кабачок","Пить кабачок","ВСЁ"],correct:2},
+  {q:"Любимая эмоция?",a:["Кабачковая радость","Кабачковая грусть","Кабачковый транс"],correct:0},
+  {q:"Главная цель?",a:["Собрать кабачки","Стать кабачком","Понять кабачок"],correct:2},
+  {q:"Что внутри кабачка?",a:["Кабачок","Ещё кабачок","Истина"],correct:2},
+  {q:"Сколько измерений?",a:["1","3","Кабачковое"],correct:2},
+  {q:"Любимый звук?",a:["Хруст кабачка","Шёпот кабачка","Тишина кабачка"],correct:0},
+  {q:"Кто управляет миром?",a:["Кабачки","Аллочка","Кабачки и Аллочка"],correct:2},
+  {q:"Финальная форма?",a:["Человек","Кабачок","Суперкабачок"],correct:1}
+];
+
+const app = document.getElementById("app");
+
+function showQuestion() {
+  let q = questions[current];
+
+  app.innerHTML = "<h2>" + q.q + "</h2>";
+
+  q.a.forEach((ans, i) => {
+    let btn = document.createElement("button");
+    btn.innerText = ans;
+
+    btn.onclick = () => {
+      btn.classList.add("selected");
+
+      if (i === q.correct) score++;
+
+      setTimeout(() => {
+        current++;
+        if (current < questions.length) {
+          showQuestion();
+        } else {
+          showResult();
+        }
+      }, 500);
+    };
+
+    app.appendChild(btn);
+  });
+}
+
+function showResult() {
+  app.innerHTML = `
+    <h2>Результат</h2>
+    <p>Ты ответил правильно на ${score} из ${questions.length}</p>
+    <p>❌ Ты не дотягиваешь до дружбы с Аллочкой.<br>
+    Пройди ещё кабачковые испытания 🥒</p>
+
+    <h3>📊 Рейтинг других</h3>
+    <table>
+      <tr><th>Имя</th><th>Знание</th></tr>
+      <tr><td>Кирилл Кабачкин</td><td>Отлично</td></tr>
+      <tr><td>Зинаида Зелёная</td><td>Хорошо</td></tr>
+      <tr><td>Артур Кабачкович</td><td>Отлично</td></tr>
+      <tr><td>Макс Кабачок</td><td>Нормально</td></tr>
+      <tr><td>Глеб Икров</td><td>Хорошо</td></tr>
+      <tr><td>Ева Кабачкова</td><td>Отлично</td></tr>
+    </table>
+  `;
+}
+
+showQuestion();
+</script>
+
+</body>
+</html>
